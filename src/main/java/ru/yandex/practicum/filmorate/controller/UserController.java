@@ -19,6 +19,7 @@ import static ru.yandex.practicum.filmorate.utility.Validator.validate;
 public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
     private int id = 0;
+
     private int generateId() {
         return id++;
     }
