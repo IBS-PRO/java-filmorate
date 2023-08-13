@@ -6,10 +6,7 @@ import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ru.yandex.practicum.filmorate.utility.Validator.validate;
 
@@ -19,6 +16,7 @@ import static ru.yandex.practicum.filmorate.utility.Validator.validate;
 public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
     private int id = 0;
+
     private int generateId() {
         return id++;
     }
