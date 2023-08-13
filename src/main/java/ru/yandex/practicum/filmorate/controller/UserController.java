@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@RequestBody @Valid User user) throws NotFoundException {
+    public User addUser(@RequestBody @Valid User user) {
         validate(user);
         user.setId(generateId());
         users.put(user.getId(), user);
