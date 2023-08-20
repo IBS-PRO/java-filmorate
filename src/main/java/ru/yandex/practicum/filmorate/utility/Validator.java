@@ -14,14 +14,4 @@ public class Validator {
                     "releaseDate не может быть меньше 28 декабря 1895 года");
         }
     }
-
-    public static void validate(User user) throws BadRequestException {
-        if (user.getLogin().contains(" ")) {
-            throw new BadRequestException("Ошибка валидации, поле login не может содержать пробелы");
-        }
-        if ((user.getName() == null) || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-    }
-
 }

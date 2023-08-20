@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +18,7 @@ public class User {
     @NotBlank
     @Email
     private String email;
-    @NotBlank
+    @NotBlank(message = "Поле login не может содержать пробелы")
     private String login;
     private String name;
     @PastOrPresent
