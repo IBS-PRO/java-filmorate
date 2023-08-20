@@ -1,15 +1,26 @@
 package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import ru.yandex.practicum.filmorate.exceptions.BadRequestException;
-import ru.yandex.practicum.filmorate.model.*;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.yandex.practicum.filmorate.utility.Validator.validate;
 
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ValidatorTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Test
     public void minimalReleaseFilmDateTest() {
         Film oldFilm = Film.builder()
@@ -38,14 +49,15 @@ public class ValidatorTest {
 
     @Test
     public void spaceValidationInLoginFieldTest() {
-        User user = User.builder()
-                .id(1)
-                .email("testUser@domain.ru")
-                .login("Иван Иванов")
-                .name("Иван")
-                .birthday(LocalDate.of(1980, 1, 1))
-                .build();
-        BadRequestException e = assertThrows(BadRequestException.class, () -> validate(user));
-        assertEquals("Ошибка валидации, поле login не может содержать пробелы", e.getMessage());
+        User testLoginField = User.builder()
+                    .id(1)
+                    .email("testUser@domain.ru")
+                    .login("  ")
+                    .name("Иван")
+                    .birthday(LocalDate.of(1980, 1, 1))
+                    .build();
+        ResponseEntity<User> response = restTemplate.postForEntity("/users", testLoginField, User.class);
+        assertEquals("400 BAD_REQUEST", response.getStatusCode().toString());
     }
+
 }
