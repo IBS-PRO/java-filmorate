@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Long, User> users = new HashMap<>();
     private Long id = 0L;
@@ -63,7 +63,7 @@ public class InMemoryUserStorage implements UserStorage{
         log.info("Все пользователи удалены");
     }
 
-    private void validate(User user){
+    private void validate(User user) {
         if ((user.getName() == null) || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
