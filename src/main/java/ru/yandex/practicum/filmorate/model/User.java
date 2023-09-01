@@ -34,8 +34,4 @@ public class User {
         friends.remove(id);
     }
 
-    public int getAllFriends() {
-        return friends.size();
-    }
-
 }
