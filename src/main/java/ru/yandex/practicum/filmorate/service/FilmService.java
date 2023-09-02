@@ -43,6 +43,7 @@ public class FilmService {
         log.info("Получение списка из " + quantity + " популярных фильмов");
         return filmStorage.getFilms().stream()
                 .sorted(Comparator.comparingInt(Film::getLikes).reversed())
+                .filter(film -> film.getLikes() > 0)
                 .limit(quantity).collect(Collectors.toList());
     }
 
