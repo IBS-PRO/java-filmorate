@@ -39,12 +39,13 @@ public class FilmService {
         log.info("Пользователь с id {} убрал like фильму с id {}", userId, filmId);
     }
 
-    public List<Film> getFirstMostPopularFilms(int quantity) {
-        log.info("Получение списка из " + quantity + " популярных фильмов");
-        return filmStorage.getFilms().stream()
+    public List<Film> getFirstMostPopularFilms(Integer count) {
+        log.info("Получение списка из " + count + " популярных фильмов");
+        return filmStorage.getFilms()
+                .stream()
                 .sorted(Comparator.comparingInt(Film::getLikes).reversed())
-                .filter(film -> film.getLikes() > 0)
-                .limit(quantity).collect(Collectors.toList());
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
 }
