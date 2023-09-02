@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 
 public class FilmControllerTest {
     private final FilmStorage storage = new InMemoryFilmStorage();
