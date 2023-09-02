@@ -1,8 +1,15 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.*;
-import javax.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -20,7 +27,7 @@ public class Film {
     private LocalDate releaseDate;
     @PositiveOrZero
     private int duration;
-    private Set<Long> likes;
+    private final Set<Long> likes = new HashSet<>();
 
     public void addLike(Long userId) {
         likes.add(userId);

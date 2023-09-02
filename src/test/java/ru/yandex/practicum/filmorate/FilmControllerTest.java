@@ -27,7 +27,6 @@ public class FilmControllerTest {
             .description("Описание")
             .releaseDate(LocalDate.of(2000, 12, 28))
             .duration(120)
-            .likes(new HashSet<>())
             .build();
 
     @Test

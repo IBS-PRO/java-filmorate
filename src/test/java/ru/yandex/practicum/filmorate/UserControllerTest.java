@@ -22,7 +22,6 @@ public class UserControllerTest {
             .login("zxc")
             .name("Иван")
             .birthday(LocalDate.of(1980, 1, 1))
-            .friends(new HashSet<>())
             .build();
 
     @Test
