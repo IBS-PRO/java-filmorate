@@ -19,39 +19,26 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private final UserStorage userStorage;
-    @Autowired
     private final UserService userService;
 
     @GetMapping
     public List<User> getUsers() {
-        log.info("GET. Пришел  запрос /users на получение списка пользователей");
-        List<User> response = userStorage.getUsers();
-        log.info("GET. Отправлен ответ /users на получение списка пользователей");
-        return response;
+        return userService.getUsers();
     }
 
     @PostMapping
     public User addUser(@RequestBody @Valid User user) {
-        log.info("POST. Пришел  запрос /users с телом: {}", user);
-        userService.validate(user);
-        User response = userStorage.addUser(user);
-        log.info("POST. Отправлен ответ /users с телом: {}", user);
-        return response;
+        return userService.addUser(user);
     }
 
     @PutMapping
     public User updateUser(@RequestBody @Valid User user) throws NotFoundException {
-        log.info("PUT. Пришел  запрос /users с телом: {}", user);
-        userService.validate(user);
-        User response = userStorage.updateUser(user);
-        log.info("PUT. Отправлен ответ /users с телом: {}", user);
-        return response;
+        return userService.updateUser(user);
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
-        return userStorage.getUser(id);
+        return userService.getUser(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")

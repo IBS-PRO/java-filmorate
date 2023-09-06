@@ -21,11 +21,38 @@ public class FilmService {
     private final FilmStorage filmStorage;
     private final UserService userService;
 
-    public void validate(Film film) {
+    private void validate(Film film) {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new BadRequestException("Ошибка по минимальной дате релиза фильма," +
                     "releaseDate не может быть меньше 28 декабря 1895 года");
         }
+    }
+
+    public List<Film> getFilms() {
+        log.info("GET. Пришел  запрос /films на получение списка фильмов");
+        List<Film> response = filmStorage.getFilms();
+        log.info("GET. Отправлен ответ /films на получение списка фильмов");
+        return response;
+    }
+
+    public Film addFilm(Film film) {
+        log.info("POST. Пришел  запрос /films с телом: {}", film);
+        validate(film);
+        Film response = filmStorage.addFilm(film);
+        log.info("POST. Отправлен ответ /films с телом: {}", response);
+        return response;
+    }
+
+    public Film updateFilm(Film film) {
+        log.info("PUT. Пришел запрос /films с телом: {}", film);
+        validate(film);
+        Film response = filmStorage.updateFilm(film);
+        log.info("PUT. Отправлен ответ /films с телом: {}", film);
+        return response;
+    }
+
+    public Film getFilm(Long id) {
+        return filmStorage.getFilm(id);
     }
 
     public void like(Long filmId, Long userId) {

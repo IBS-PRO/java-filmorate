@@ -23,10 +23,37 @@ public class UserService {
         return userStorage;
     }
 
-    public void validate(User user) {
+    private void validate(User user) {
         if ((user.getName() == null) || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
+    }
+
+    public List<User> getUsers() {
+        log.info("GET. Пришел  запрос /users на получение списка пользователей");
+        List<User> response = userStorage.getUsers();
+        log.info("GET. Отправлен ответ /users на получение списка пользователей");
+        return response;
+    }
+
+    public User addUser(User user) {
+        log.info("POST. Пришел  запрос /users с телом: {}", user);
+        validate(user);
+        User response = userStorage.addUser(user);
+        log.info("POST. Отправлен ответ /users с телом: {}", user);
+        return response;
+    }
+
+    public User updateUser(User user) {
+        log.info("PUT. Пришел  запрос /users с телом: {}", user);
+        validate(user);
+        User response = userStorage.updateUser(user);
+        log.info("PUT. Отправлен ответ /users с телом: {}", user);
+        return response;
+    }
+
+    public User getUser(Long id) {
+        return userStorage.getUser(id);
     }
 
     public void addFriend(Long userId, Long friendId) {

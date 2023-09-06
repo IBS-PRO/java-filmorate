@@ -18,39 +18,26 @@ import java.util.List;
 public class FilmController {
 
     @Autowired
-    private final FilmStorage filmStorage;
-    @Autowired
     public final FilmService filmService;
 
     @GetMapping
     public List<Film> getFilms() {
-        log.info("GET. Пришел  запрос /films на получение списка фильмов");
-        List<Film> response = filmStorage.getFilms();
-        log.info("GET. Отправлен ответ /films на получение списка фильмов");
-        return response;
-
+        return filmService.getFilms();
     }
 
     @PostMapping
     public Film addFilm(@RequestBody @Valid Film film) {
-        log.info("POST. Пришел  запрос /films с телом: {}", film);
-        Film response = filmStorage.addFilm(film);
-        log.info("POST. Отправлен ответ /films с телом: {}", response);
-        return response;
+        return filmService.addFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film film) {
-        log.info("PUT. Пришел запрос /films с телом: {}", film);
-        filmService.validate(film);
-        Film response = filmStorage.updateFilm(film);
-        log.info("PUT. Отправлен ответ /films с телом: {}", film);
-        return response;
+        return filmService.updateFilm(film);
     }
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable Long id) {
-        return filmStorage.getFilm(id);
+        return filmService.getFilm(id);
     }
 
     @PutMapping("/{id}/like/{userId}")

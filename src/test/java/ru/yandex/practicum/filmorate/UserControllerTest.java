@@ -13,7 +13,7 @@ public class UserControllerTest {
 
     private InMemoryUserStorage storage = new InMemoryUserStorage();
     private UserService service = new UserService(storage);
-    private UserController controller = new UserController(storage, service);
+    private UserController controller = new UserController(service);
 
     private final User user = User.builder()
             .id(1L)
