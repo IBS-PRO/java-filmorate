@@ -23,7 +23,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
-        validate(user);
         user.setId(generateId());
         users.put(user.getId(), user);
         log.info("Пользователь '{}' добавлен в хранилище с id '{}'", user.getName(), user.getId());
@@ -48,7 +47,6 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
-            validate(user);
             users.put(user.getId(), user);
             log.info("Пользователь '{}' с id '{}' обновлен", user.getName(), user.getId());
             return user;
@@ -63,9 +61,4 @@ public class InMemoryUserStorage implements UserStorage {
         log.info("Все пользователи удалены");
     }
 
-    private void validate(User user) {
-        if ((user.getName() == null) || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-    }
 }

@@ -25,23 +25,27 @@ public class FilmController {
     @GetMapping
     public List<Film> getFilms() {
         log.info("GET. Пришел  запрос /films на получение списка фильмов");
+        List<Film> response = filmStorage.getFilms();
         log.info("GET. Отправлен ответ /films на получение списка фильмов");
-        return filmStorage.getFilms();
+        return response;
 
     }
 
     @PostMapping
     public Film addFilm(@RequestBody @Valid Film film) {
         log.info("POST. Пришел  запрос /films с телом: {}", film);
-        log.info("POST. Отправлен ответ /films с телом: {}", film);
-        return filmStorage.addFilm(film);
+        Film response = filmStorage.addFilm(film);
+        log.info("POST. Отправлен ответ /films с телом: {}", response);
+        return response;
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film film) {
         log.info("PUT. Пришел запрос /films с телом: {}", film);
+        filmService.validate(film);
+        Film response = filmStorage.updateFilm(film);
         log.info("PUT. Отправлен ответ /films с телом: {}", film);
-        return filmStorage.updateFilm(film);
+        return response;
     }
 
     @GetMapping("/{id}")

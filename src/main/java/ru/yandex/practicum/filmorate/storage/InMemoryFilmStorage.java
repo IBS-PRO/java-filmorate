@@ -25,7 +25,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film addFilm(Film film) {
-        validate(film);
         film.setId(generateId());
         films.put(film.getId(), film);
         log.info("Фильм '{}' добавлен в хранилище с id '{}'", film.getName(), film.getId());
@@ -50,7 +49,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         if (films.containsKey(film.getId())) {
-            validate(film);
             films.put(film.getId(), film);
             log.info("Фильм '{}' с id '{}' обновлен", film.getName(), film.getId());
             return film;
@@ -63,13 +61,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteFilms() {
         films.clear();
         log.info("Хранилище фильмов очищено");
-    }
-
-    private void validate(Film film) {
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new BadRequestException("Ошибка по минимальной дате релиза фильма," +
-                    "releaseDate не может быть меньше 28 декабря 1895 года");
-        }
     }
 
 }

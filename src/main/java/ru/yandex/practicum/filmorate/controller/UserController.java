@@ -26,22 +26,27 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         log.info("GET. Пришел  запрос /users на получение списка пользователей");
+        List<User> response = userStorage.getUsers();
         log.info("GET. Отправлен ответ /users на получение списка пользователей");
-        return userStorage.getUsers();
+        return response;
     }
 
     @PostMapping
     public User addUser(@RequestBody @Valid User user) {
         log.info("POST. Пришел  запрос /users с телом: {}", user);
+        userService.validate(user);
+        User response = userStorage.addUser(user);
         log.info("POST. Отправлен ответ /users с телом: {}", user);
-        return userStorage.addUser(user);
+        return response;
     }
 
     @PutMapping
     public User updateUser(@RequestBody @Valid User user) throws NotFoundException {
         log.info("PUT. Пришел  запрос /users с телом: {}", user);
+        userService.validate(user);
+        User response = userStorage.updateUser(user);
         log.info("PUT. Отправлен ответ /users с телом: {}", user);
-        return userStorage.updateUser(user);
+        return response;
     }
 
     @GetMapping("/{id}")

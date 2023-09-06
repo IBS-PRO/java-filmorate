@@ -23,6 +23,12 @@ public class UserService {
         return userStorage;
     }
 
+    public void validate(User user) {
+        if ((user.getName() == null) || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
+    }
+
     public void addFriend(Long userId, Long friendId) {
         User user = userStorage.getUser(userId);
         User friend = userStorage.getUser(friendId);

@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.BadRequestException;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,13 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
     private final UserService userService;
+
+    public void validate(Film film) {
+        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+            throw new BadRequestException("Ошибка по минимальной дате релиза фильма," +
+                    "releaseDate не может быть меньше 28 декабря 1895 года");
+        }
+    }
 
     public void like(Long filmId, Long userId) {
         Film film = filmStorage.getFilm(filmId);
