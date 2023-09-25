@@ -116,7 +116,9 @@ public class FilmDbStorage implements FilmStorage {
                 public int getBatchSize() {
                     return genresTable.size();
             }
+
         });
+
     }
 
     public void like(Long filmId, Long userId) {
