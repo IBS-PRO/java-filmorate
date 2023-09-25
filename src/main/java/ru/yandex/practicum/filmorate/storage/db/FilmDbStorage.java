@@ -100,7 +100,7 @@ public class FilmDbStorage implements FilmStorage {
         return sqlQuery;
     }
 
-    public void addGenre(Long filmId, Set <Genre> genres) {
+    public void addGenre(Long filmId, Set<Genre>genres) {
         deleteAllGenresById(filmId);
         if (genres == null || genres.isEmpty()) {
             return;
