@@ -100,25 +100,23 @@ public class FilmDbStorage implements FilmStorage {
         return sqlQuery;
     }
 
-    public void addGenre(Long filmId, Set<Genre> genres) {
+    public void addGenre(Long filmId, Set < Genre > genres) {
         deleteAllGenresById(filmId);
         if (genres == null || genres.isEmpty()) {
             return;
         }
-        String sqlQuery = "INSERT INTO film_genres (film_id, genre_id) "
-                + "VALUES (?, ?)";
-        List<Genre> genresTable = new ArrayList<>(genres);
+        String sqlQuery = "INSERT INTO film_genres (film_id, genre_id) " +
+                "VALUES (?, ?)";
+        List < Genre > genresTable = new ArrayList < > (genres);
         this.jdbcTemplate.batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setInt(1, Long.valueOf(filmId).intValue());
                 ps.setInt(2, Long.valueOf(genresTable.get(i).getId()).intValue());
             }
-                public int getBatchSize() {
-                    return genresTable.size();
+            public int getBatchSize() {
+                return genresTable.size();
             }
-
         });
-
     }
 
     public void like(Long filmId, Long userId) {
