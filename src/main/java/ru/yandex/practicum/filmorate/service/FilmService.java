@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.BadRequestException;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,9 +28,9 @@ public class FilmService {
         }
     }
 
-    public List<Film> getFilms() {
+    public Collection<Film> getFilms() {
         log.info("GET. Пришел  запрос /films на получение списка фильмов");
-        List<Film> response = filmStorage.getFilms();
+        Collection<Film> response = filmStorage.getFilms();
         log.info("GET. Отправлен ответ /films на получение списка фильмов");
         return response;
     }
@@ -51,37 +51,51 @@ public class FilmService {
         return response;
     }
 
+    public void deleteFilm(Long filmId) {
+        if (getFilm(filmId) == null) {
+            throw new NotFoundException("Фильм с id = " + filmId + " не найден");
+        }
+        log.info("Удален фильм с id: {}", filmId);
+        filmStorage.deleteFilm(filmId);
+    }
+
     public Film getFilm(Long id) {
+        log.info("Запрошен фильм с id = " + id);
         return filmStorage.getFilm(id);
     }
 
     public void like(Long filmId, Long userId) {
         Film film = filmStorage.getFilm(filmId);
-        userService.getUserStorage().getUser(userId);
-        if (film == null) {
-            throw new NotFoundException("Фильм с id " + filmId + " не найден");
+        if (film != null) {
+            if (userService.getUser(userId) != null) {
+                filmStorage.like(filmId, userId);
+                log.info("Лайк добавлен");
+            } else {
+                throw new NotFoundException("пользователь с id = " + userId + " не найден");
+            }
+        } else {
+            throw new NotFoundException("Фильм с id  = " + filmId + " не найден");
         }
-        film.addLike(userId);
-        log.info("Пользователь с id {} поставил like фильму с id {}", userId, filmId);
     }
 
     public void disLike(Long filmId, Long userId) {
         Film film = filmStorage.getFilm(filmId);
-        userService.getUserStorage().getUser(userId);
-        if (film == null) {
-            throw new NotFoundException("Фильм с id " + filmId + " не найден");
+        if (film != null) {
+            if (userService.getUser(userId) != null) {
+                filmStorage.disLike(filmId, userId);
+                log.info("Лайк удален");
+            } else {
+                throw new NotFoundException("пользователь с id = " + userId + " не найден");
+            }
+        } else {
+            throw new NotFoundException("Фильм с id  " + filmId + " не найден");
         }
-        film.removeLike(userId);
-        log.info("Пользователь с id {} убрал like фильму с id {}", userId, filmId);
     }
 
     public List<Film> getFirstMostPopularFilms(Integer count) {
-        log.info("Получение списка из " + count + " популярных фильмов");
-        return filmStorage.getFilms()
-                .stream()
-                .sorted(Comparator.comparingInt(Film::getLikes).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+        List<Film> result = new ArrayList<>(filmStorage.getPopular(count));
+        log.info("Запрос популярного фильма");
+        return result;
     }
 
 }
