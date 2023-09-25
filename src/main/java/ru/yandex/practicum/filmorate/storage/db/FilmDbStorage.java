@@ -100,7 +100,7 @@ public class FilmDbStorage implements FilmStorage {
         return sqlQuery;
     }
 
-    public void addGenre(Long filmId, Set<Genre>genres) {
+    public void addGenre(Long filmId, Set<Genre> genres) {
         deleteAllGenresById(filmId);
         if (genres == null || genres.isEmpty()) {
             return;
@@ -113,9 +113,11 @@ public class FilmDbStorage implements FilmStorage {
                 ps.setInt(1, Long.valueOf(filmId).intValue());
                 ps.setInt(2, Long.valueOf(genresTable.get(i).getId()).intValue());
             }
+
             public int getBatchSize() {
                 return genresTable.size();
             }
+
         });
     }
 
