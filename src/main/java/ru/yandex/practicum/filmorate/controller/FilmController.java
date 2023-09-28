@@ -21,37 +21,60 @@ public class FilmController {
 
     @GetMapping
     public List<Film> getFilms() {
-        return filmService.getFilms();
+        log.info("Пришел GET запрос /films");
+        List<Film> response = filmService.getFilms();
+        log.info("Отправлен ответ GET /films с телом: {}", response);
+        return response;
     }
 
     @PostMapping
     public Film addFilm(@RequestBody @Valid Film film) {
-        return filmService.addFilm(film);
+        log.info("Пришел POST запрос /films с телом {}", film);
+        Film response = filmService.addFilm(film);
+        log.info("Отправлен ответ POST /films с телом: {}", response);
+        return response;
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film film) {
-        return filmService.updateFilm(film);
+        log.info("Пришел PUT запрос /films с телом {}", film);
+        Film response = filmService.updateFilm(film);
+        log.info("Отправлен ответ PUT /films с телом: {}", response);
+        return response;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteFilm(@PathVariable Long id) {
+        log.info("Пришел DELETE запрос /films/{id} с параметром {}", id);
+        filmService.deleteFilm(id);
     }
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable Long id) {
-        return filmService.getFilm(id);
+        log.info("Пришел GET запрос /films/{id}");
+        Film response = filmService.getFilm(id);
+        log.info("Отправлен ответ GET /films/{id} с телом: {}", response);
+        return response;
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
+        log.info("Пришел PUT запрос /{id}/like/{userId} с параметрами {} и {}", id, userId);
         filmService.like(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
+        log.info("Пришел DELETE запрос /films/{id} с параметром {}", id);
         filmService.disLike(id, userId);
     }
 
     @GetMapping("/popular")
     public List<Film> getPopularMovies(@RequestParam(defaultValue = "10") Integer count) {
-        return filmService.getFirstMostPopularFilms(count);
+        log.info("Пришел GET запрос /popular");
+        List<Film> response = filmService.getFirstMostPopularFilms(count);
+        log.info("Отправлен ответ GET /popular с телом: {}", response);
+        return response;
     }
 
 }
